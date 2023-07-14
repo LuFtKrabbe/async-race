@@ -1,0 +1,18 @@
+html {
+    font-size: 10px;
+    min-width: 480px;
+}
+
+body {
+    box-sizing: border-box;
+    margin: 0;
+    background: linear-gradient(
+        $color-ambient-sky 5%, 
+        $color-ambient-sky-light 10%, 
+        $color-ambient-sky-light-light 31%, 
+        $color-ambient-grass 32%,
+        $color-ambient-grass 42%,
+        $color-ambient-border 42.2%,
+        $color-ambient-border 44%,
+        $color-ambient-asphalt 44.2%);
+}
