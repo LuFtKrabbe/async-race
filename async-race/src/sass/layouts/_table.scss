@@ -1,0 +1,52 @@
+.table-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    height: 80px;
+    margin: 10px;
+    padding: 10px 0px;
+    border-radius: 10px;
+    background-color: $controller-wrapper;
+}
+
+.table {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.table-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    width: 95%;
+    height: 20%;
+    background-color: $table-header;
+}
+
+.header-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    &[header = ordinal-number] {
+        width: 10%;
+    }
+    &[header = car-image] {
+        width: 25%;
+    }
+    &[header = car-name] {
+        width: 25%;
+    }
+    &[header = wins-number] {
+        width: 10%;
+    }
+    &[header = best-time] {
+        width: 20%;
+    }
+}
