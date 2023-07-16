@@ -24,3 +24,5 @@ export default function createPageParts(): void {
   contentYear.innerHTML = '2023';
   footerContent.append(contentLuftkrabbe, contentYear, contentLogo);
 }
+
+createPageParts();

@@ -67,3 +67,5 @@ export default function createRaceController(): void {
 
   controller.append(carCreator, carUpdater, controllPanel);
 }
+
+createRaceController();
