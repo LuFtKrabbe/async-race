@@ -9,9 +9,9 @@ export default function createPageParts(): void {
 
   body.append(header, main, footer);
 
-  const garage = elemHTMLClassAttr('garage')();
+  const garage = elemHTMLClassAttr('garage-button')();
   garage.innerHTML = 'Garage';
-  const winners = elemHTMLClassAttr('winners')();
+  const winners = elemHTMLClassAttr('winners-button')();
   winners.innerHTML = 'Winners';
   header.append(garage, winners);
 

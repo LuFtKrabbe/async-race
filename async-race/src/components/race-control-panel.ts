@@ -19,27 +19,8 @@ function createCarCreator() {
   return carCreator;
 }
 
-function createCarUpdater() {
-  const carUpdater = elemHTMLClassAttr('car-updater')();
-
-  const inputBrandUpdater = elemHTMLClassAttr('text-car-updater', 'input')('placeholder', 'Type car brand...');
-  inputBrandUpdater.setAttribute('type', 'text');
-  inputBrandUpdater.setAttribute('size', '30');
-  inputBrandUpdater.setAttribute('size', '16');
-
-  const colorUpdater = elemHTMLClassAttr('color-car-updater', 'input')('type', 'color');
-  colorUpdater.setAttribute('value', '#aaffff');
-
-  const buttonUpdater = elemHTMLClassAttr('button')('button', 'update');
-  buttonUpdater.innerHTML = 'UPDATE';
-
-  carUpdater.append(inputBrandUpdater, colorUpdater, buttonUpdater);
-
-  return carUpdater;
-}
-
-function createControllPanel() {
-  const controllPanel = elemHTMLClassAttr('controll-panel')();
+function createRaceControllPanel() {
+  const controllPanel = elemHTMLClassAttr('race-controll-panel')();
 
   const raceButton = elemHTMLClassAttr('button')('button', 'race');
   raceButton.innerHTML = 'RACE';
@@ -56,16 +37,15 @@ function createControllPanel() {
 export default function createRaceController(): void {
   const main = document.querySelector('.main') as Element;
 
-  const controllerWrapper = elemHTMLClassAttr('controller-wrapper')();
-  main.append(controllerWrapper);
-  const controller = elemHTMLClassAttr('controller')();
-  controllerWrapper.append(controller);
+  const controllerPanelWrapper = elemHTMLClassAttr('controll-panel-wrapper')();
+  main.append(controllerPanelWrapper);
+  const controllerPanel = elemHTMLClassAttr('controll-panel')();
+  controllerPanelWrapper.append(controllerPanel);
 
   const carCreator = createCarCreator();
-  const carUpdater = createCarUpdater();
-  const controllPanel = createControllPanel();
+  const raceControllPanel = createRaceControllPanel();
 
-  controller.append(carCreator, carUpdater, controllPanel);
+  controllerPanel.append(carCreator, raceControllPanel);
 }
 
 createRaceController();

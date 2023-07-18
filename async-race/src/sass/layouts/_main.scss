@@ -1,5 +1,7 @@
 .main {
     display: flex;
+    justify-content: space-between;
+    flex-direction: column;
     height: 86vh;
     min-height: 50px;
     width: 100%;

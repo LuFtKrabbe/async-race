@@ -1,16 +1,16 @@
-.controller-wrapper {
+.controll-panel-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 300px;
-    height: 80px;
+    height: 50px;
     margin: 10px;
     padding: 10px 0px;
     border-radius: 10px;
     background-color: $controller-wrapper;
 }
 
-.controller {
+.controll-panel {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -20,8 +20,7 @@
 }
 
 .car-creator,
-.car-updater,
-.controll-panel {
+.race-controll-panel {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -30,12 +29,11 @@
     margin: 3px 0;
 }
 
-.text-car-creator,
-.text-car-updater {
+.text-car-creator {
     box-sizing: border-box;
     border-radius: 3px;
     height: 100%;
-    width: 150px;
+    width: 156px;
     border: none;
     background-color: $controller-input;
     &:focus {
@@ -43,8 +41,7 @@
     }
 }
 
-.color-car-creator,
-.color-car-updater {
+.color-car-creator {
     box-sizing: border-box;
     border-radius: 3px;
     height: 100%;
@@ -61,22 +58,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 70px;
+    width: 75px;
     height: 100%;
     border-radius: 3px;
     transition: all 200ms ease;
     &[button = create] {
-        margin: 0 0 0 10px;
         background-color: $controller-button-create;
         &:hover {
             background-color: $controller-button-create-hover;
-        }
-    }
-    &[button = update] {
-        margin: 0 0 0 10px;
-        background-color: $controller-button-update;
-        &:hover {
-            background-color: $controller-button-update-hover;
         }
     }
     &[button = race] {
@@ -97,7 +86,7 @@
         }
     }
     &[button = generate] {
-        width: 115px;
+        width: 110px;
         background-color: $controller-button-generate;
         &:hover {
             background-color: $controller-button-generate-hover;
