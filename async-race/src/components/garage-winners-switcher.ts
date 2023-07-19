@@ -1,23 +1,22 @@
 import createRaceController from './race-control-panel';
-import createWinnersTable from './winners-table';
+import createPagination from './pagination';
+import createTable from './winners-table';
+import createRace from './race-car-boxes';
 
 function switchGarageWinners(event: Event): void {
   const target = event.target as Element;
+  const main = document.querySelector('.main');
 
-  if (target.matches('.garage-button')) {
-    const winnersTable = document.querySelector('.table-wrapper');
-    if (winnersTable !== null) {
-      winnersTable.remove();
-      createRaceController();
-    }
+  if (target.matches('.garage-button') && main !== null) {
+    main.replaceChildren();
+    createRaceController();
+    createPagination();
+    createRace();
   }
 
-  if (target.matches('.winners-button')) {
-    const controlPanel = document.querySelector('.controller-wrapper');
-    if (controlPanel !== null) {
-      controlPanel.remove();
-      createWinnersTable();
-    }
+  if (target.matches('.winners-button') && main !== null) {
+    main.replaceChildren();
+    createTable();
   }
 }
 
