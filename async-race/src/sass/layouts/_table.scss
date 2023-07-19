@@ -2,8 +2,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     width: 300px;
-    height: 80px;
     margin: 10px;
     padding: 10px 0px;
     border-radius: 10px;
@@ -25,7 +25,7 @@
     justify-content: center;
     border-radius: 5px;
     width: 95%;
-    height: 20%;
+    height: 20px;
     background-color: $table-header;
 }
 
@@ -33,7 +33,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
     &[header = ordinal-number] {
         width: 10%;
     }

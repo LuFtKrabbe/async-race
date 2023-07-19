@@ -1,6 +1,6 @@
 import elemHTMLClassAttr from './utilities/functions';
 
-export default function createWinnersTable(): void {
+function createTableHeader(): void {
   const main = document.querySelector('.main') as Element;
 
   const tableWrapper = elemHTMLClassAttr('table-wrapper')();
@@ -22,4 +22,30 @@ export default function createWinnersTable(): void {
   bestTime.innerText = 'Best time';
 
   tableHeader.append(ordinalNumber, carImage, carName, winsNumber, bestTime);
+}
+
+function createTablePagination() {
+  const tableWrapper = document.querySelector('.table-wrapper') as Element;
+
+  const tablePaginationInfo = elemHTMLClassAttr('table-pagination-info')();
+  const tablePagination = elemHTMLClassAttr('table-pagination')();
+
+  const tableCarInfo = elemHTMLClassAttr('text-table-pagination')('text', 'cars');
+  tableCarInfo.innerHTML = 'WINNERS: 1';
+  const tablePageInfo = elemHTMLClassAttr('text-table-pagination')('text', 'page');
+  tablePageInfo.innerHTML = 'PAGE: 1';
+
+  const tablePrevButton = elemHTMLClassAttr('button-table-pagination')('button', 'prev');
+  tablePrevButton.innerHTML = 'PREVIOUS';
+  const tableNextButton = elemHTMLClassAttr('button-table-pagination')('button', 'next');
+  tableNextButton.innerHTML = 'NEXT';
+
+  tablePagination.append(tablePrevButton, tableNextButton);
+  tablePaginationInfo.append(tableCarInfo, tablePageInfo);
+  tableWrapper.append(tablePaginationInfo, tablePagination);
+}
+
+export default function createTable() {
+  createTableHeader();
+  createTablePagination();
 }
