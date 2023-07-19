@@ -19,6 +19,25 @@ function createCarCreatorPanel(): HTMLElement {
   return carCreatorPanel;
 }
 
+function createCarUpdaterPanel(): HTMLElement {
+  const carUpdater = elemHTMLClassAttr('car-updater-panel')();
+
+  const inputBrandUpdater = elemHTMLClassAttr('text-car-updater', 'input')('placeholder', 'Type car brand...');
+  inputBrandUpdater.setAttribute('type', 'text');
+  inputBrandUpdater.setAttribute('size', '30');
+  inputBrandUpdater.setAttribute('size', '16');
+
+  const colorUpdater = elemHTMLClassAttr('color-car-updater', 'input')('type', 'color');
+  colorUpdater.setAttribute('value', '#aaffff');
+
+  const updateButton = elemHTMLClassAttr('button')('button', 'update');
+  updateButton.innerHTML = 'UPDATE';
+
+  carUpdater.append(inputBrandUpdater, colorUpdater, updateButton);
+
+  return carUpdater;
+}
+
 function createRaceControlPanel(): HTMLElement {
   const controllPanel = elemHTMLClassAttr('race-control-panel')();
 
@@ -69,11 +88,12 @@ export default function createControlPanel(): void {
   controlPanelWrapper.append(controlPanel);
 
   const carCreatorPanel = createCarCreatorPanel();
+  const carUpdaterPanel = createCarUpdaterPanel();
   const raceControlPanel = createRaceControlPanel();
   const informationPanel = createInformationPanel();
   const paginationPanel = createPaginationPanel();
 
-  controlPanel.append(carCreatorPanel, raceControlPanel, informationPanel, paginationPanel);
+  controlPanel.append(carCreatorPanel, carUpdaterPanel, raceControlPanel, informationPanel, paginationPanel);
 }
 
 createControlPanel();
