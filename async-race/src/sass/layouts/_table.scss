@@ -49,3 +49,51 @@
         width: 20%;
     }
 }
+
+.table-information-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    height: 30px;
+    margin: 10px 0 0 0;
+}
+
+.table-pagination-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    height: 30px;
+    margin: 3px;
+}
+
+.button-table {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 49%;
+    height: 100%;
+    border-radius: 3px;
+    transition: all 200ms ease;
+    &[button-table = winners] {
+        background-color: $pagination-table-button-winners;
+    }
+    &[button-table = page] {
+        background-color: $pagination-table-button-page;
+    }
+    &[button-table = prev] {
+        width: 75px;
+        background-color: $pagination-button-prev;
+        &:hover {
+            background-color: $pagination-button-prev-hover;
+        }
+    }
+    &[button-table = next] {
+        width: 75px;
+        background-color: $pagination-button-next;
+        &:hover {
+            background-color: $pagination-button-next-hover;
+        }
+    }
+}
