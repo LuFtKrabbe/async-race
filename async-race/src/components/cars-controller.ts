@@ -52,7 +52,7 @@ export default class CarsController implements DataCarsController {
   }
 }
 
-const race = document.querySelector('.race') as Element;
+const race = document.querySelector('.race-place') as Element;
 race.append(new CarsController().carTrack);
 race.append(new CarsController().carTrack);
 race.append(new CarsController().carTrack);

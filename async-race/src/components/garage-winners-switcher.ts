@@ -1,6 +1,5 @@
-import createControlPanel from './control-panel';
+import createControlPanel from './garage-view';
 import createTable from './winners-table';
-import createRace from './race-car-boxes';
 
 function switchGarageWinners(event: Event): void {
   const target = event.target as Element;
@@ -9,7 +8,6 @@ function switchGarageWinners(event: Event): void {
   if (target.matches('.garage-button') && main !== null) {
     main.replaceChildren();
     createControlPanel();
-    createRace();
   }
 
   if (target.matches('.winners-button') && main !== null) {

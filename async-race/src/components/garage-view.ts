@@ -79,7 +79,7 @@ function createPaginationPanel(): HTMLElement {
   return paginationPanel;
 }
 
-export default function createControlPanel(): void {
+export default function createGarageView(): void {
   const main = document.querySelector('.main') as Element;
 
   const controlPanelWrapper = elemHTMLClassAttr('control-panel-wrapper')();
@@ -94,6 +94,11 @@ export default function createControlPanel(): void {
   const paginationPanel = createPaginationPanel();
 
   controlPanel.append(carCreatorPanel, carUpdaterPanel, raceControlPanel, informationPanel, paginationPanel);
+
+  const racePlaceWrapper = elemHTMLClassAttr('race-place-wrapper')();
+  main.append(racePlaceWrapper);
+  const racePlace = elemHTMLClassAttr('race-place')();
+  racePlaceWrapper.append(racePlace);
 }
 
-createControlPanel();
+createGarageView();
