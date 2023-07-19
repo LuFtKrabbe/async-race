@@ -1,0 +1,110 @@
+.race-wrapper {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    height: 66%;
+}
+
+.race {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.car-track {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 100%;
+    height: 14%;
+    border-bottom: double 6px white;
+}
+
+.car-editor {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    height: 35%;
+}
+
+.car-controller {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    width: 100%;
+    height: 65%;
+}
+
+.engine-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    height: 100%;
+}
+
+.button-edit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 16px;
+    width: 16px;
+    font-size: 1.6rem;
+    border-radius: 5px;
+    margin: 0 0 0 5px;
+    &[button = delete] {
+        font-size: 1.2rem;
+        background-color: rgba(119, 118, 118, 0.3);
+    }
+    &[button = edit] {
+        background-color: rgba(119, 118, 118, 0.3);
+    }
+}
+
+.car-name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    height: 100%;
+    margin: 0 0 0 5px;
+    padding: 0 5px;
+    border-radius: 5px;
+    background-color: $table-header;
+}
+
+.button-engine {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    height: 16px;
+    width: 16px;
+    border-radius: 5px;
+    margin: 0 0 0 5px;
+    &[button = start] {
+        background-color: rgb(141, 1, 1);
+    }
+    &[button = stop] {
+        background-color: rgb(99, 172, 4);
+    }
+}
+
+.car {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0 0 5px;
+    width: 58px;
+    height: 100%;
+    transform: scale(-1, 1);
+    transform-origin: center;
+}
