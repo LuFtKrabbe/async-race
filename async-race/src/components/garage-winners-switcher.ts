@@ -1,5 +1,4 @@
-import createRaceController from './race-control-panel';
-import createPagination from './pagination';
+import createControlPanel from './control-panel';
 import createTable from './winners-table';
 import createRace from './race-car-boxes';
 
@@ -9,8 +8,7 @@ function switchGarageWinners(event: Event): void {
 
   if (target.matches('.garage-button') && main !== null) {
     main.replaceChildren();
-    createRaceController();
-    createPagination();
+    createControlPanel();
     createRace();
   }
 

@@ -1,4 +1,4 @@
-.controll-panel-wrapper {
+.control-panel-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -10,17 +10,19 @@
     background-color: $controller-wrapper;
 }
 
-.controll-panel {
+.control-panel {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     width: 100%;
-    height: 50px;
+    height: 100px;
 }
 
-.car-creator,
-.race-controll-panel {
+.car-creator-panel,
+.race-control-panel, 
+.information-panel,
+.pagination-panel {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -29,11 +31,11 @@
     margin: 3px 0;
 }
 
-.text-car-creator {
+.text-car-creator, 
+.color-car-creator {
     box-sizing: border-box;
     border-radius: 3px;
     height: 100%;
-    width: 156px;
     border: none;
     background-color: $controller-input;
     &:focus {
@@ -41,17 +43,13 @@
     }
 }
 
+.text-car-creator {
+    width: 156px;
+}
+
 .color-car-creator {
-    box-sizing: border-box;
-    border-radius: 3px;
-    height: 100%;
     width: 30px;
     padding: 0 2px;
-    border: none;
-    background-color: $controller-input;
-    &:focus {
-        outline: none;
-    }
 }
 
 .button {
@@ -92,4 +90,25 @@
             background-color: $controller-button-generate-hover;
         }
     }
+    &[button = cars] {
+        width: 49%;
+        background-color: $pagination-button-cars;
+    }
+    &[button = page] {
+        width: 49%;
+        background-color: $pagination-button-page;
+    }
+    &[button = prev] {
+        background-color: $pagination-button-prev;
+        &:hover {
+            background-color: $pagination-button-prev-hover;
+        }
+    }
+    &[button = next] {
+        background-color: $pagination-button-next;
+        &:hover {
+            background-color: $pagination-button-next-hover;
+        }
+    }
+
 }
