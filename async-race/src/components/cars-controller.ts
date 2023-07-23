@@ -4,8 +4,6 @@ import CarTracks from './car-tracks';
 export default class CarsController extends CarTracks implements DataCarsController {
   static baseUrl = 'http://localhost:3000';
 
-  static currentTrack: number;
-
   static currentPage: number = 1;
 
   static totalCars: string | null;
@@ -29,11 +27,8 @@ export default class CarsController extends CarTracks implements DataCarsControl
   }
 
   static async getCars(): Promise<CarTracks[]> {
-    const racePlace = document.querySelector('.race-place') as Element;
     const buttonCars = document.querySelector('[button = cars]') as Element;
     const buttonPage = document.querySelector('[button = page]') as Element;
-
-    racePlace.replaceChildren();
 
     const response = await fetch(`${this.baseUrl}/garage?_page=${this.currentPage}&_limit=7`);
     const data = await response.json();
@@ -45,15 +40,14 @@ export default class CarsController extends CarTracks implements DataCarsControl
     const arr: Array<CarTracks> = [];
 
     data.forEach((value: { name: string; color: string; id: number }) => {
-      const CarDrive = new CarTracks(value.name, value.color, value.id);
-      arr.push(CarDrive);
+      arr.push(new CarTracks(value.name, value.color, value.id));
     });
+
     return arr;
   }
 
   static async drawCars(): Promise<void> {
     const racePlace = document.querySelector('.race-place') as Element;
-
     racePlace.replaceChildren();
 
     const carsReady = await CarsController.cars;
@@ -74,6 +68,7 @@ export default class CarsController extends CarTracks implements DataCarsControl
       body: JSON.stringify({ name: name.value, color: color.value }),
     });
 
+    CarsController.cars = CarsController.getCars();
     CarsController.drawCars();
   }
 
@@ -81,7 +76,7 @@ export default class CarsController extends CarTracks implements DataCarsControl
     const name = document.querySelector('.text-car-updater') as HTMLInputElement;
     const color = document.querySelector('.color-car-updater') as HTMLInputElement;
 
-    await fetch(`${CarsController.baseUrl}/garage/${CarsController.currentTrack}`, {
+    await fetch(`${CarsController.baseUrl}/garage/${CarTracks.currentTrack}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -89,18 +84,22 @@ export default class CarsController extends CarTracks implements DataCarsControl
       body: JSON.stringify({ name: name.value, color: color.value }),
     });
 
+    CarsController.cars = CarsController.getCars();
     CarsController.drawCars();
   }
 
   static async removeCar(event: Event): Promise<void> {
     const target = event.target as Element;
-    const id = target.parentElement?.parentElement?.getAttribute('id') as string;
+    if (target.matches('[button = delete]')) {
+      const id = target.parentElement?.parentElement?.getAttribute('id') as string;
 
-    await fetch(`${CarsController.baseUrl}/garage/${id}`, {
-      method: 'DELETE',
-    });
+      await fetch(`${CarsController.baseUrl}/garage/${id}`, {
+        method: 'DELETE',
+      });
 
-    CarsController.drawCars();
+      CarsController.cars = CarsController.getCars();
+      CarsController.drawCars();
+    }
   }
 
   static async startRace(): Promise<void> {
@@ -120,6 +119,7 @@ const prevButton = document.querySelector('[button = prev]') as Element;
 const nextButton = document.querySelector('[button = next]') as Element;
 const raceButton = document.querySelector('[button = race]') as Element;
 const resetButton = document.querySelector('[button = reset]') as Element;
+const racePlace = document.querySelector('.race-place') as Element;
 
 createButton.addEventListener('click', CarsController.createCar);
 updateButton.addEventListener('click', CarsController.updateCar);
@@ -127,5 +127,6 @@ prevButton.addEventListener('click', CarsController.drawPrevPage);
 nextButton.addEventListener('click', CarsController.drawNextPage);
 raceButton.addEventListener('click', CarsController.startRace);
 resetButton.addEventListener('click', CarsController.resetRace);
+racePlace.addEventListener('click', CarsController.removeCar);
 
 CarsController.drawCars();

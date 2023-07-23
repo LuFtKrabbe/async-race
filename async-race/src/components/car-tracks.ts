@@ -28,7 +28,6 @@ export default class CarTracks implements DataCarTracks {
   createTrack(name: string, color: string, id: number) {
     const deleteButton = elemHTMLClassAttr('button-edit')('button', 'delete');
     deleteButton.innerHTML = '&#10060';
-    deleteButton.addEventListener('click', this.removeTrack.bind(this));
     const editButton = elemHTMLClassAttr('button-edit')('button', 'edit');
     editButton.innerHTML = '&#128396';
     editButton.addEventListener('click', this.setTrackForUpdate.bind(this));
@@ -111,14 +110,5 @@ export default class CarTracks implements DataCarTracks {
     cancelAnimationFrame(this.animationId);
     this.car.style.left = `${0}px`;
     console.log(data);
-  }
-
-  async removeTrack(): Promise<void> {
-    const baseUrl = 'http://localhost:3000';
-    const id = this.carTrack.getAttribute('id');
-
-    await fetch(`${baseUrl}/garage/${id}`, {
-      method: 'DELETE',
-    });
   }
 }
