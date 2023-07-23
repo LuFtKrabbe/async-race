@@ -104,7 +104,14 @@ export default class CarsController extends CarTracks implements DataCarsControl
 
   static async startRace(): Promise<void> {
     const carsReady = await CarsController.cars;
-    carsReady.forEach((car) => car.startCarEngine());
+    const arr: Array<Promise<CarTracks>> = [];
+    carsReady.forEach((car) => arr.push(car.startCarEngine()));
+    try {
+      const promise = await Promise.any(arr);
+      console.log(promise);
+    } catch {
+      console.log('All engines are broken down!!!');
+    }
   }
 
   static async resetRace(): Promise<void> {
