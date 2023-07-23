@@ -1,5 +1,6 @@
 import createGarageView from './garage-view';
 import createTableView from './table-view';
+import CarsController from './cars-controller';
 
 function switchGarageWinners(event: Event): void {
   const target = event.target as Element;
@@ -8,6 +9,7 @@ function switchGarageWinners(event: Event): void {
   if (target.matches('.garage-button') && main !== null) {
     main.replaceChildren();
     createGarageView();
+    CarsController.drawCars();
   }
 
   if (target.matches('.winners-button') && main !== null) {

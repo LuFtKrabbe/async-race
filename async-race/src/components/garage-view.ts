@@ -56,12 +56,12 @@ function createRaceControlPanel(): HTMLElement {
 function createInformationPanel(): HTMLElement {
   const informationPanel = elemHTMLClassAttr('information-panel')();
 
-  const carInfo = elemHTMLClassAttr('button')('button', 'cars');
-  carInfo.innerHTML = 'CARS: 1';
   const pageInfo = elemHTMLClassAttr('button')('button', 'page');
   pageInfo.innerHTML = 'PAGE: 1';
+  const carInfo = elemHTMLClassAttr('button')('button', 'cars');
+  carInfo.innerHTML = 'CARS: 1';
 
-  informationPanel.append(carInfo, pageInfo);
+  informationPanel.append(pageInfo, carInfo);
 
   return informationPanel;
 }
