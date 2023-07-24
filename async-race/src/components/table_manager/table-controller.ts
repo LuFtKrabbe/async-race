@@ -85,21 +85,31 @@ export default class TableController implements DataTableController {
   }
 
   static async sortWins(): Promise<void> {
+    const winsButton = document.querySelector('[header = wins-number]') as HTMLElement;
+    const bestTimeButton = document.querySelector('[header = best-time]') as HTMLElement;
     if (TableController.sort === '_sort=wins&_order=ASC') {
       TableController.sort = '_sort=wins&_order=DESC';
+      winsButton.innerHTML = 'WINS &#128269; &#8595;';
     } else {
       TableController.sort = '_sort=wins&_order=ASC';
+      winsButton.innerHTML = 'WINS &#128269; &#8593;';
     }
+    bestTimeButton.innerHTML = 'BEST TIME &#128269;';
     TableController.winners = TableController.getWinners();
     TableController.drawTable();
   }
 
   static async sortTime(): Promise<void> {
+    const winsButton = document.querySelector('[header = wins-number]') as HTMLElement;
+    const bestTimeButton = document.querySelector('[header = best-time]') as HTMLElement;
     if (TableController.sort === '_sort=time&_order=ASC') {
       TableController.sort = '_sort=time&_order=DESC';
+      bestTimeButton.innerHTML = 'BEST TIME &#128269; &#8595;';
     } else {
       TableController.sort = '_sort=time&_order=ASC';
+      bestTimeButton.innerHTML = 'BEST TIME &#128269; &#8593;';
     }
+    winsButton.innerHTML = 'WINS &#128269;';
     TableController.winners = TableController.getWinners();
     TableController.drawTable();
   }

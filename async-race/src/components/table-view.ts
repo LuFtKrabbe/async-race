@@ -6,13 +6,13 @@ function createTableHeader(): HTMLElement {
   const ordinalNumber = elemHTMLClassAttr('header-cell')('header', 'ordinal-number');
   ordinalNumber.innerText = '№';
   const carImage = elemHTMLClassAttr('header-cell')('header', 'car-image');
-  carImage.innerText = 'Image';
+  carImage.innerText = 'IMAGE';
   const carName = elemHTMLClassAttr('header-cell')('header', 'car-name');
-  carName.innerText = 'Name';
+  carName.innerText = 'NAME';
   const winsNumber = elemHTMLClassAttr('header-cell')('header', 'wins-number');
-  winsNumber.innerText = 'Wins';
+  winsNumber.innerHTML = 'WINS &#128269;';
   const bestTime = elemHTMLClassAttr('header-cell')('header', 'best-time');
-  bestTime.innerText = 'Best time';
+  bestTime.innerHTML = 'BEST TIME &#128269;';
 
   tableHeader.append(ordinalNumber, carImage, carName, winsNumber, bestTime);
 

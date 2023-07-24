@@ -34,20 +34,30 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 75%;
+    border-radius: 10px;
     &[header = ordinal-number] {
-        width: 10%;
+        width: 5%;
     }
     &[header = car-image] {
-        width: 25%;
+        width: 20%;
     }
     &[header = car-name] {
         width: 25%;
     }
     &[header = wins-number] {
-        width: 10%;
+        width: 15%;
+        background-color: $table-header-wins;
+        &:hover {
+            background-color: $table-header-wins-hover;
+        }
     }
     &[header = best-time] {
-        width: 20%;
+        width: 25%;
+        background-color: $table-header-time;
+        &:hover {
+            background-color: $table-header-time-hover;
+        }
     }
 }
 
@@ -75,19 +85,19 @@
     align-items: center;
     justify-content: center;
     &[row = ordinal-number] {
-        width: 10%;
+        width: 5%;
     }
     &[row = car-image] {
-        width: 25%;
+        width: 20%;
     }
     &[row = car-name] {
         width: 25%;
     }
     &[row = wins-number] {
-        width: 10%;
+        width: 15%;
     }
     &[row = best-time] {
-        width: 20%;
+        width: 25%;
     }
     & svg {
         width: 100%;
