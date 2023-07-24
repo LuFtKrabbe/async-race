@@ -1,11 +1,10 @@
 import { type DataCarsController } from '../types/interfaces';
+import { getRandomName, getRandomColor } from './car-utilities';
 import TableController from '../table_manager/table-controller';
 import CarQueries from './car-queries';
 import CarTracks from './car-tracks';
 
 export default class CarsController extends CarTracks implements DataCarsController {
-  static baseUrl = 'http://localhost:3000';
-
   static currentPage: number = 1;
 
   static message: string = 'MESSAGE';
@@ -18,7 +17,7 @@ export default class CarsController extends CarTracks implements DataCarsControl
 
   static cars = CarsController.getCars();
 
-  static async drawNextPage(): Promise<void> {
+  static drawNextPage(): void {
     if (Number(CarsController.totalCars) / 7 > CarsController.currentPage) {
       CarsController.currentPage += 1;
       CarsController.cars = CarsController.getCars();
@@ -27,7 +26,7 @@ export default class CarsController extends CarTracks implements DataCarsControl
     }
   }
 
-  static async drawPrevPage(): Promise<void> {
+  static drawPrevPage(): void {
     if (CarsController.currentPage > 1) {
       CarsController.currentPage -= 1;
       CarsController.cars = CarsController.getCars();
@@ -82,42 +81,21 @@ export default class CarsController extends CarTracks implements DataCarsControl
     });
   }
 
-  static getRandomName(): string {
-    const brand = ['Audi', 'Bently', 'BMW', 'Cherry', 'Shevrolet', 'Nissan', 'Lamborgini', 'Mazda', 'Opel', 'Volvo'];
-    const models = ['A4', 'Azure', 'X5', 'Tiggo', 'Aveo', 'X-Trail', 'Aventador', 'CX-3', 'Astra', 'XC60'];
-    return `${brand[Math.floor(Math.random() * 10)]} ${models[Math.floor(Math.random() * 10)]}`;
-  }
-
   static async generateCars(): Promise<void> {
-    function getRandomColor(): string {
-      const color: string[] = [];
-      for (let i = 1; i <= 3; i += 1) {
-        color.push(`0${Math.floor(Math.random() * 256).toString(16)}`.slice(-2));
-      }
-      return `#${color.join('')}`;
-    }
     const randomCarArr: Array<Promise<Response>> = [];
-
     for (let i = 1; i <= 100; i += 1) {
-      randomCarArr.push(CarQueries.createCar(CarsController.getRandomName(), getRandomColor()));
+      randomCarArr.push(CarQueries.createCar(getRandomName(), getRandomColor()));
     }
-
     await Promise.all(randomCarArr);
-
+    CarsController.writeMessage('100 RANDOM CARS ARE CREATED');
     CarsController.cars = CarsController.getCars();
     CarsController.drawCars();
-
-    CarsController.writeMessage('100 RANDOM CARS ARE CREATED');
   }
 
   static async createCar(): Promise<void> {
     const name = document.querySelector('.text-car-creator') as HTMLInputElement;
     const color = document.querySelector('.color-car-creator') as HTMLInputElement;
-    let carName = name.value;
-    if (name.value === '') {
-      carName = CarsController.getRandomName();
-      CarsController.writeMessage('RANDOM CAR HAS BEEN CREATED');
-    }
+    const carName = name.value ? name.value : getRandomName();
     await CarQueries.createCar(carName, color.value);
     CarsController.writeMessage('CAR HAS BEEN CREATED');
     CarsController.cars = CarsController.getCars();
@@ -137,10 +115,9 @@ export default class CarsController extends CarTracks implements DataCarsControl
     CarsController.textUpdater = name.value;
     CarsController.colorUpdater = color.value;
 
+    CarsController.writeMessage('CAR HAS BEEN UPDATED');
     CarsController.cars = CarsController.getCars();
     CarsController.drawCars();
-
-    CarsController.writeMessage('CAR HAS BEEN UPDATED');
   }
 
   static async removeCar(event: Event): Promise<void> {
@@ -149,12 +126,11 @@ export default class CarsController extends CarTracks implements DataCarsControl
       const id = target.parentElement?.parentElement?.getAttribute('id') as string;
 
       await CarQueries.removeCar(id);
+      await TableController.deleteWinner(id);
 
+      CarsController.writeMessage('CAR HAS BEEN REMOVED');
       CarsController.cars = CarsController.getCars();
       CarsController.drawCars();
-
-      TableController.deleteWinner(id);
-      CarsController.writeMessage('CAR HAS BEEN REMOVED');
     }
   }
 

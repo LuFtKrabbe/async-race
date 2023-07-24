@@ -6,8 +6,6 @@ import Cars from './cars';
 export default class CarTracks implements DataCarTracks {
   static currentTrack: number;
 
-  static baseUrl = 'http://localhost:3000';
-
   carTrack: HTMLElement = elemHTMLClassAttr('car-track')();
 
   stopButton: HTMLElement = elemHTMLClassAttr('button-engine')('button', 'stop');
