@@ -1,6 +1,7 @@
-import { type DataCarsController } from './types/interfaces';
+import { type DataCarsController } from '../types/interfaces';
+import TableController from '../table-controller';
+import CarQueries from './car-queries';
 import CarTracks from './car-tracks';
-import TableController from './table-controller';
 
 export default class CarsController extends CarTracks implements DataCarsController {
   static baseUrl = 'http://localhost:3000';
@@ -55,10 +56,8 @@ export default class CarsController extends CarTracks implements DataCarsControl
   }
 
   static async getCars(): Promise<CarTracks[]> {
-    const carsOnPage = 7;
     const arrCarTracks: Array<CarTracks> = [];
-    const queryString = `?_page=${this.currentPage}&_limit=${carsOnPage}`;
-    const response = await fetch(`${this.baseUrl}/garage${queryString}`);
+    const response = await CarQueries.getCarsOnPage(this.currentPage);
     const data = await response.json();
 
     CarsController.totalCars = response.headers.get('x-total-count');
@@ -100,7 +99,7 @@ export default class CarsController extends CarTracks implements DataCarsControl
     const randomCarArr: Array<Promise<Response>> = [];
 
     for (let i = 1; i <= 100; i += 1) {
-      randomCarArr.push(CarsController.createRandomCar(CarsController.getRandomName(), getRandomColor()));
+      randomCarArr.push(CarQueries.createCar(CarsController.getRandomName(), getRandomColor()));
     }
 
     await Promise.all(randomCarArr);
@@ -111,34 +110,16 @@ export default class CarsController extends CarTracks implements DataCarsControl
     CarsController.writeMessage('100 RANDOM CARS ARE CREATED');
   }
 
-  static async createRandomCar(name: string, color: string): Promise<Response> {
-    const addRandomCar = await fetch(`${CarsController.baseUrl}/garage`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name, color }),
-    });
-    return addRandomCar;
-  }
-
   static async createCar(): Promise<void> {
     const name = document.querySelector('.text-car-creator') as HTMLInputElement;
     const color = document.querySelector('.color-car-creator') as HTMLInputElement;
     let carName = name.value;
     if (name.value === '') {
       carName = CarsController.getRandomName();
-      CarsController.writeMessage('RANDOM CAR IS CREATED');
+      CarsController.writeMessage('RANDOM CAR HAS BEEN CREATED');
     }
-
-    await fetch(`${CarsController.baseUrl}/garage`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name: carName, color: color.value }),
-    });
-
+    await CarQueries.createCar(carName, color.value);
+    CarsController.writeMessage('CAR HAS BEEN CREATED');
     CarsController.cars = CarsController.getCars();
     CarsController.drawCars();
   }
@@ -151,19 +132,15 @@ export default class CarsController extends CarTracks implements DataCarsControl
       return;
     }
 
-    await fetch(`${CarsController.baseUrl}/garage/${CarTracks.currentTrack}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name: name.value, color: color.value }),
-    });
+    await CarQueries.updateCar(CarTracks.currentTrack, name.value, color.value);
 
     CarsController.textUpdater = name.value;
     CarsController.colorUpdater = color.value;
 
     CarsController.cars = CarsController.getCars();
     CarsController.drawCars();
+
+    CarsController.writeMessage('CAR HAS BEEN UPDATED');
   }
 
   static async removeCar(event: Event): Promise<void> {
@@ -171,9 +148,7 @@ export default class CarsController extends CarTracks implements DataCarsControl
     if (target.matches('[button = delete]')) {
       const id = target.parentElement?.parentElement?.getAttribute('id') as string;
 
-      await fetch(`${CarsController.baseUrl}/garage/${id}`, {
-        method: 'DELETE',
-      });
+      await CarQueries.removeCar(id);
 
       CarsController.cars = CarsController.getCars();
       CarsController.drawCars();

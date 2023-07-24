@@ -67,7 +67,7 @@ export default class TableController implements DataTableController {
 
   static async getWinner(carId: number): Promise<{ id: number; wins: number; time: number }> {
     const response = await fetch(`${TableController.baseUrl}/winners/${carId}`);
-    const data = await response.json();
+    const data: { id: number; wins: number; time: number } = await response.json();
 
     return data;
   }
@@ -96,8 +96,8 @@ export default class TableController implements DataTableController {
     TableController.winners = TableController.getWinners();
   }
 
-  static async deleteWinner(id: string): Promise<void> {
-    await fetch(`${TableController.baseUrl}/winners/${id}`, {
+  static async deleteWinner(carId: string): Promise<void> {
+    await fetch(`${TableController.baseUrl}/winners/${carId}`, {
       method: 'DELETE',
     });
     TableController.winners = TableController.getWinners();

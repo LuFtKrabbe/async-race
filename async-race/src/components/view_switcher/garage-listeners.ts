@@ -1,4 +1,4 @@
-import CarsController from '../cars-controller';
+import CarsController from '../car_manager/cars-controller';
 
 export default function addEventListenersGarage() {
   const createButton = document.querySelector('[button = create]') as Element;
@@ -25,3 +25,5 @@ export default function addEventListenersGarage() {
 
   racePlace.addEventListener('click', CarsController.removeCar);
 }
+
+addEventListenersGarage();

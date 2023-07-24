@@ -1,5 +1,5 @@
-import { type DataCars } from './types/interfaces';
-import car from '../svg/car.svg';
+import { type DataCars } from '../types/interfaces';
+import car from '../../svg/car.svg';
 
 export default class Cars implements DataCars {
   static carsQuantity: number;

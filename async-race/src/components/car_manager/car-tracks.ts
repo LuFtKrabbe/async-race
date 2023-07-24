@@ -1,5 +1,6 @@
-import { type DataCarTracks } from './types/interfaces';
-import elemHTMLClassAttr from './utilities/functions';
+import { type DataCarTracks } from '../types/interfaces';
+import elemHTMLClassAttr from '../utilities/functions';
+import CarQueriesEngine from './car-queries-engine';
 import Cars from './cars';
 
 export default class CarTracks implements DataCarTracks {
@@ -85,12 +86,7 @@ export default class CarTracks implements DataCarTracks {
     const carWidth = 160;
     const carDistance = currentWidth - carWidth;
 
-    const response = await fetch(`${CarTracks.baseUrl}/engine?id=${this.carId}&status=started`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await CarQueriesEngine.startEngine(this.carId);
     const data = await response.json();
     this.driveTime = data.distance / data.velocity;
     const step = carDistance / this.driveTime;
@@ -106,13 +102,8 @@ export default class CarTracks implements DataCarTracks {
     this.animationId = requestAnimationFrame(myAnimation);
 
     try {
-      const responseDrive = await fetch(`${CarTracks.baseUrl}/engine?id=${this.carId}&status=drive`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      await responseDrive.json();
+      const responseCar = await CarQueriesEngine.driveEngine(this.carId);
+      await responseCar.json();
     } catch {
       cancelAnimationFrame(this.animationId);
       throw new Error();
@@ -123,14 +114,12 @@ export default class CarTracks implements DataCarTracks {
   async stopCarEngine(): Promise<void> {
     this.stopButton.classList.add('unactive');
     this.stopButton.style.pointerEvents = 'none';
+
     cancelAnimationFrame(this.animationId);
-    await fetch(`${CarTracks.baseUrl}/engine?id=${this.carId}&status=stopped`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    await CarQueriesEngine.stopEngine(this.carId);
+
     this.car.style.left = `${0}px`;
+
     this.startButton.classList.remove('unactive');
     this.startButton.style.pointerEvents = 'auto';
   }
