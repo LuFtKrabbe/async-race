@@ -8,13 +8,16 @@ export default class TableController implements DataTableController {
 
   static currentPage: number = 1;
 
+  static sort: string = '';
+
   static winners = TableController.getWinners();
 
   static async getWinners(): Promise<TableRows[]> {
     const buttonPage: Element | null = document.querySelector('[button-table = page]');
     const buttonWinners: Element | null = document.querySelector('[button-table = winners]');
+    const queryString = `/winners?_page=${TableController.currentPage}&_limit=2&${TableController.sort}`;
 
-    const response = await fetch(`${TableController.baseUrl}/winners?_page=${TableController.currentPage}&_limit=2`);
+    const response = await fetch(`${TableController.baseUrl}${queryString}`);
     const data = await response.json();
 
     TableController.totalWinners = response.headers.get('x-total-count');
@@ -95,5 +98,25 @@ export default class TableController implements DataTableController {
       method: 'DELETE',
     });
     TableController.winners = TableController.getWinners();
+  }
+
+  static async sortWins(): Promise<void> {
+    if (TableController.sort === '_sort=wins&_order=ASC') {
+      TableController.sort = '_sort=wins&_order=DESC';
+    } else {
+      TableController.sort = '_sort=wins&_order=ASC';
+    }
+    TableController.winners = TableController.getWinners();
+    TableController.drawTable();
+  }
+
+  static async sortTime(): Promise<void> {
+    if (TableController.sort === '_sort=time&_order=ASC') {
+      TableController.sort = '_sort=time&_order=DESC';
+    } else {
+      TableController.sort = '_sort=time&_order=ASC';
+    }
+    TableController.winners = TableController.getWinners();
+    TableController.drawTable();
   }
 }
