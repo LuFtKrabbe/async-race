@@ -2,7 +2,7 @@
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
-    height: 68%;
+    height: 68.5%;
 }
 
 .race-place {
@@ -24,6 +24,12 @@
     width: 100%;
     height: 14%;
     border-bottom: double 6px white;
+    background: linear-gradient( 270deg,
+        $color-ambient-asphalt 100px,
+        $color-ambient-finish-border 100px,
+        $color-ambient-finish-border 110px, 
+        $color-ambient-finish 110px,
+        $color-ambient-asphalt 125px);
 }
 
 .car-editor {

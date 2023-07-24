@@ -3,7 +3,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    width: 300px;
+    width: 400px;
     margin: 10px;
     padding: 10px 0px;
     border-radius: 10px;
@@ -47,13 +47,26 @@
 
 .text-car-creator,
 .text-car-updater {
-    width: 156px;
+    width: 246px;
 }
 
 .color-car-creator,
 .color-car-updater {
     width: 30px;
     padding: 0 2px;
+}
+
+.message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 100%;
+    border-radius: 3px;
+    transition: all 200ms ease;
+    &[button = message] {
+        background-color: $pagination-button-message;
+    }
 }
 
 .button {
@@ -77,6 +90,7 @@
         }
     }
     &[button = race] {
+        width: 120px;
         background: linear-gradient(
         to right, 
         $controller-button-race-1 0%, 
@@ -88,6 +102,7 @@
         }
     }
     &[button = reset] {
+        width: 120px;
         background-color: $controller-button-reset;
         &:hover {
             background-color: $controller-button-reset-hover;

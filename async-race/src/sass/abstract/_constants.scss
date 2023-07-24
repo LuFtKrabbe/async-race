@@ -15,6 +15,8 @@ $color-ambient-sky: rgb(66, 185, 221);
 $color-ambient-sky-light: rgb(45, 221, 221);
 $color-ambient-sky-light-light: rgb(155, 252, 252);
 $color-ambient-grass: rgb(97, 207, 34);
+$color-ambient-finish: rgba(207, 132, 34, 0.616);
+$color-ambient-finish-border: rgb(199, 199, 199);
 $color-ambient-border: rgb(196, 196, 196);
 $color-ambient-asphalt: #504f48;
 
@@ -44,9 +46,10 @@ $pagination-button-page: rgba(255, 255, 255, 0.3);
 
 $pagination-table-button-winners: rgba(255, 255, 255, 0.3);
 $pagination-table-button-page: rgba(255, 255, 255, 0.3);
-
+$pagination-button-message: rgba(173, 172, 108, 0.712);
 $pagination-button-prev: rgba(201, 135, 135, 0.7);
 $pagination-button-prev-hover: rgba(201, 135, 135, 0.9);
+
 $pagination-button-next: rgba(127, 182, 129, 0.7);
 $pagination-button-next-hover: rgba(127, 182, 129, 0.9);
 
