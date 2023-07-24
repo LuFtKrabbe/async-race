@@ -71,10 +71,12 @@ function createPaginationPanel(): HTMLElement {
 
   const prevButton = elemHTMLClassAttr('button')('button', 'prev');
   prevButton.innerHTML = 'PREVIOUS';
+  const messageField = elemHTMLClassAttr('message')('button', 'message');
+  messageField.innerHTML = 'MESSAGE';
   const nextButton = elemHTMLClassAttr('button')('button', 'next');
   nextButton.innerHTML = 'NEXT';
 
-  paginationPanel.append(prevButton, nextButton);
+  paginationPanel.append(prevButton, messageField, nextButton);
 
   return paginationPanel;
 }
