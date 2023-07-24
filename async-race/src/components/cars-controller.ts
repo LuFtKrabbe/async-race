@@ -16,6 +16,7 @@ export default class CarsController extends CarTracks implements DataCarsControl
       CarsController.currentPage += 1;
       CarsController.cars = CarsController.getCars();
       CarsController.drawCars();
+      CarsController.setPageCarInfo();
     }
   }
 
@@ -24,21 +25,24 @@ export default class CarsController extends CarTracks implements DataCarsControl
       CarsController.currentPage -= 1;
       CarsController.cars = CarsController.getCars();
       CarsController.drawCars();
+      CarsController.setPageCarInfo();
     }
   }
 
-  static async getCars(): Promise<CarTracks[]> {
+  static async setPageCarInfo(): Promise<void> {
     const buttonCars = document.querySelector('[button = cars]') as Element;
     const buttonPage = document.querySelector('[button = page]') as Element;
+    buttonPage.innerHTML = `PAGE ${CarsController.currentPage}`;
+    buttonCars.innerHTML = `CARS ${CarsController.totalCars}`;
+  }
 
+  static async getCars(): Promise<CarTracks[]> {
+    const arr: Array<CarTracks> = [];
     const response = await fetch(`${this.baseUrl}/garage?_page=${this.currentPage}&_limit=7`);
     const data = await response.json();
 
     CarsController.totalCars = response.headers.get('x-total-count');
-    buttonPage.innerHTML = `PAGE ${CarsController.currentPage}`;
-    buttonCars.innerHTML = `CARS ${CarsController.totalCars}`;
-
-    const arr: Array<CarTracks> = [];
+    CarsController.setPageCarInfo();
 
     data.forEach((value: { name: string; color: string; id: number }) => {
       arr.push(new CarTracks(value.name, value.color, value.id));
@@ -55,6 +59,43 @@ export default class CarsController extends CarTracks implements DataCarsControl
     carsReady.forEach((car) => {
       racePlace.append(car.carTrack);
     });
+  }
+
+  static async generateCars(): Promise<void> {
+    const brand = ['Audi', 'Bently', 'BMW', 'Cherry', 'Shevrolet', 'Nissan', 'Lamborgini', 'Mazda', 'Opel', 'Volvo'];
+    const models = ['A4', 'Azure', 'X5', 'Tiggo', 'Aveo', 'X-Trail', 'Aventador', 'CX-3', 'Astra', 'XC60'];
+
+    function getRandomName(): string {
+      return `${brand[Math.floor(Math.random() * 10)]} ${models[Math.floor(Math.random() * 10)]}`;
+    }
+    function getRandomColor(): string {
+      const color: string[] = [];
+      for (let i = 1; i <= 3; i += 1) {
+        color.push(Math.floor(Math.random() * 256).toString(16));
+      }
+      return `#${color.join('')}`;
+    }
+    const randomCarArr: Array<Promise<Response>> = [];
+
+    for (let i = 1; i <= 100; i += 1) {
+      randomCarArr.push(CarsController.createRandomCar(getRandomName(), getRandomColor()));
+    }
+
+    await Promise.all(randomCarArr);
+
+    CarsController.cars = CarsController.getCars();
+    CarsController.drawCars();
+  }
+
+  static async createRandomCar(name: string, color: string): Promise<Response> {
+    const addRandomCar = await fetch(`${CarsController.baseUrl}/garage`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, color }),
+    });
+    return addRandomCar;
   }
 
   static async createCar(): Promise<void> {
@@ -132,18 +173,20 @@ export default class CarsController extends CarTracks implements DataCarsControl
 
 const createButton = document.querySelector('[button = create]') as Element;
 const updateButton = document.querySelector('[button = update]') as Element;
-const prevButton = document.querySelector('[button = prev]') as Element;
-const nextButton = document.querySelector('[button = next]') as Element;
 const raceButton = document.querySelector('[button = race]') as Element;
 const resetButton = document.querySelector('[button = reset]') as Element;
+const generateButton = document.querySelector('[button = generate]') as Element;
+const prevButton = document.querySelector('[button = prev]') as Element;
+const nextButton = document.querySelector('[button = next]') as Element;
 const racePlace = document.querySelector('.race-place') as Element;
 
 createButton.addEventListener('click', CarsController.createCar);
 updateButton.addEventListener('click', CarsController.updateCar);
-prevButton.addEventListener('click', CarsController.drawPrevPage);
-nextButton.addEventListener('click', CarsController.drawNextPage);
 raceButton.addEventListener('click', CarsController.startRace);
 resetButton.addEventListener('click', CarsController.resetRace);
+generateButton.addEventListener('click', CarsController.generateCars);
+prevButton.addEventListener('click', CarsController.drawPrevPage);
+nextButton.addEventListener('click', CarsController.drawNextPage);
 racePlace.addEventListener('click', CarsController.removeCar);
 
 CarsController.drawCars();
