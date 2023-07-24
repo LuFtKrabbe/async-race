@@ -2,12 +2,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    align-self: center;
     flex-direction: column;
-    width: 300px;
-    margin: 10px;
-    padding: 10px 0px;
+    width: 400px;
+    margin: 15px;
+    padding: 15px 0px;
     border-radius: 10px;
-    background-color: $controller-wrapper;
+    background-color: $table-wrapper;
 }
 
 .table {
@@ -24,8 +25,8 @@
     align-items: center;
     justify-content: center;
     border-radius: 5px;
-    width: 95%;
-    height: 20px;
+    width: 92%;
+    height: 35px;
     background-color: $table-header;
 }
 
@@ -53,9 +54,10 @@
 .table-rows {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     flex-direction: column;
-    width: 95%;
+    height: 300px;
+    width: 92%;
 }
 
 .table-row {

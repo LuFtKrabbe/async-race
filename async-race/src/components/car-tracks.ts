@@ -39,7 +39,7 @@ export default class CarTracks implements DataCarTracks {
     stopButton.innerHTML = 'S';
     const startButton = elemHTMLClassAttr('button-engine')('button', 'start');
     startButton.addEventListener('click', this.startCarEngine.bind(this));
-    startButton.innerHTML = 'A';
+    startButton.innerHTML = 'GO';
     const carName = elemHTMLClassAttr('car-name')();
     carName.innerHTML = `${this.carName}`;
 
@@ -62,7 +62,7 @@ export default class CarTracks implements DataCarTracks {
   }
 
   async startCarEngine(): Promise<this> {
-    const carDistance = document.documentElement.clientWidth - 150;
+    const carDistance = document.documentElement.clientWidth - 200;
     let carPostion = 0;
 
     const response = await fetch(`${CarTracks.baseUrl}/engine?id=${this.carId}&status=started`, {

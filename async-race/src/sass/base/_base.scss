@@ -1,6 +1,7 @@
 html {
     font-size: 10px;
     min-width: 480px;
+    user-select: none;
 }
 
 body {
@@ -9,10 +10,10 @@ body {
     background: linear-gradient(
         $color-ambient-sky 3%, 
         $color-ambient-sky-light 8%, 
-        $color-ambient-sky-light-light 21%, 
-        $color-ambient-grass 22%,
-        $color-ambient-grass 32%,
-        $color-ambient-border 32.2%,
+        $color-ambient-sky-light-light 28%, 
+        $color-ambient-grass 29%,
+        $color-ambient-grass 32.4%,
+        $color-ambient-border 32.6%,
         $color-ambient-border 34%,
         $color-ambient-asphalt 34.2%);
 }

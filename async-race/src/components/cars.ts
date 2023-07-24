@@ -16,8 +16,4 @@ export default class Cars implements DataCars {
     this.car.append(this.use);
     this.car.style.fill = `${color}`;
   }
-
-  createCar() {
-    this.car.setAttribute('car', 'create');
-  }
 }
