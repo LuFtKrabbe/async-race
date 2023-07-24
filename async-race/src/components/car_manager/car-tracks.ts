@@ -46,7 +46,7 @@ export default class CarTracks implements DataCarTracks {
     this.stopButton.style.pointerEvents = 'none';
     this.stopButton.innerHTML = 'S';
 
-    this.startButton.addEventListener('click', this.startCarEngine.bind(this));
+    this.startButton.addEventListener('click', this.startCarEngine.bind(this, true));
     this.startButton.innerHTML = 'GO';
 
     const carName = elemHTMLClassAttr('car-name')();
@@ -74,7 +74,7 @@ export default class CarTracks implements DataCarTracks {
     color.value = this.carColor;
   }
 
-  async startCarEngine(): Promise<this> {
+  async startCarEngine(singleCall: boolean): Promise<this> {
     this.stopButton.classList.remove('unactive');
     this.stopButton.style.pointerEvents = 'auto';
     this.startButton.classList.add('unactive');
@@ -104,7 +104,9 @@ export default class CarTracks implements DataCarTracks {
       await responseCar.json();
     } catch {
       cancelAnimationFrame(this.animationId);
-      throw new Error();
+      if (singleCall === false) {
+        throw new Error('The engine has broken down');
+      }
     }
     return this;
   }

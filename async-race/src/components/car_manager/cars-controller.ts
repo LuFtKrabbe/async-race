@@ -142,9 +142,10 @@ export default class CarsController extends CarTracks implements DataCarsControl
     resetButton.style.pointerEvents = 'none';
     const carsReady = await CarsController.cars;
     const arr: Array<Promise<CarTracks>> = [];
-    carsReady.forEach((car) => arr.push(car.startCarEngine()));
+    carsReady.forEach((car) => arr.push(car.startCarEngine(false)));
     try {
       const promise = await Promise.any(arr);
+      console.log(arr);
       const currentWinTime = Number((promise.driveTime / 1000).toFixed(2));
       const winnerData = await TableController.getWinner(promise.carId);
       if (winnerData.time === undefined) {
