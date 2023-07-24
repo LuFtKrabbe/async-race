@@ -1,5 +1,6 @@
 import { type DataCarsController } from './types/interfaces';
 import CarTracks from './car-tracks';
+import TableController from './table-controller';
 
 export default class CarsController extends CarTracks implements DataCarsController {
   static baseUrl = 'http://localhost:3000';
@@ -99,6 +100,8 @@ export default class CarsController extends CarTracks implements DataCarsControl
 
       CarsController.cars = CarsController.getCars();
       CarsController.drawCars();
+
+      TableController.deleteWinner(id);
     }
   }
 
@@ -108,7 +111,14 @@ export default class CarsController extends CarTracks implements DataCarsControl
     carsReady.forEach((car) => arr.push(car.startCarEngine()));
     try {
       const promise = await Promise.any(arr);
-      console.log(promise);
+      const winnerData = await TableController.getWinner(promise.carId);
+      if (winnerData.time === undefined) {
+        TableController.createWinner(promise.carId, Number((promise.driveTime / 1000).toFixed(2)));
+      } else if (winnerData.time < promise.driveTime) {
+        TableController.updateWinner(winnerData.id, winnerData.wins, winnerData.time);
+      } else {
+        TableController.updateWinner(winnerData.id, winnerData.wins, Number((promise.driveTime / 1000).toFixed(2)));
+      }
     } catch {
       console.log('All engines are broken down!!!');
     }

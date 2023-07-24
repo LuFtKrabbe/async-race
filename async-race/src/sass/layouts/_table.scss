@@ -50,6 +50,49 @@
     }
 }
 
+.table-rows {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 95%;
+}
+
+.table-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 30px;
+    border-radius: 5px;
+    background-color: $table-row;
+}
+
+.row-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &[row = ordinal-number] {
+        width: 10%;
+    }
+    &[row = car-image] {
+        width: 25%;
+    }
+    &[row = car-name] {
+        width: 25%;
+    }
+    &[row = wins-number] {
+        width: 10%;
+    }
+    &[row = best-time] {
+        width: 20%;
+    }
+    & svg {
+        width: 100%;
+        height: 30px;
+    }
+}
+
 .table-information-panel {
     display: flex;
     align-items: center;

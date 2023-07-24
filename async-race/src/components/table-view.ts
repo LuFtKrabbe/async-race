@@ -22,12 +22,12 @@ function createTableHeader(): HTMLElement {
 function createTableInformationPanel(): HTMLElement {
   const tableInformationPanel = elemHTMLClassAttr('table-information-panel')();
 
-  const tableWinnersInfo = elemHTMLClassAttr('button-table')('button-table', 'winners');
-  tableWinnersInfo.innerHTML = 'WINNERS: 1';
   const tablePageInfo = elemHTMLClassAttr('button-table')('button-table', 'page');
   tablePageInfo.innerHTML = 'PAGE: 1';
+  const tableWinnersInfo = elemHTMLClassAttr('button-table')('button-table', 'winners');
+  tableWinnersInfo.innerHTML = 'WINNERS: 1';
 
-  tableInformationPanel.append(tableWinnersInfo, tablePageInfo);
+  tableInformationPanel.append(tablePageInfo, tableWinnersInfo);
 
   return tableInformationPanel;
 }
@@ -54,9 +54,10 @@ export default function createTableView(): void {
   tableWrapper.append(table);
 
   const tableHeader = createTableHeader();
+  const tableRows = elemHTMLClassAttr('table-rows')();
   const tableInformationPanel = createTableInformationPanel();
   const tablePaginationPanel = createTablePaginationPanel();
 
-  table.append(tableHeader);
+  table.append(tableHeader, tableRows);
   tableWrapper.append(tableInformationPanel, tablePaginationPanel);
 }
