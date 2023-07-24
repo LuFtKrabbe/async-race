@@ -1,7 +1,6 @@
-import { type DataCars } from '../types/interfaces';
 import car from '../../svg/car.svg';
 
-export default class Cars implements DataCars {
+export default class Cars {
   static carsQuantity: number;
 
   car: SVGSVGElement;

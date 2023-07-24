@@ -1,8 +1,7 @@
-import { type DataTableController } from '../types/interfaces';
 import TableQueries from './table_queries';
 import TableRows from './table-rows';
 
-export default class TableController implements DataTableController {
+export default class TableController {
   static totalWinners: string | null;
 
   static currentPage: number = 1;

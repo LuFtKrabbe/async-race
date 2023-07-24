@@ -1,9 +1,8 @@
-import { type DataCarTracks } from '../types/interfaces';
 import elemHTMLClassAttr from '../utilities/functions';
 import CarQueriesEngine from './car-queries-engine';
 import Cars from './cars';
 
-export default class CarTracks implements DataCarTracks {
+export default class CarTracks {
   static currentTrack: number;
 
   carTrack: HTMLElement = elemHTMLClassAttr('car-track')();
@@ -23,6 +22,10 @@ export default class CarTracks implements DataCarTracks {
   driveTime: number;
 
   animationId: number;
+
+  static textUpdater: string = '';
+
+  static colorUpdater: string = '#AAFFFF';
 
   constructor(name: string, color: string, id: number) {
     this.car = new Cars(color).car;
@@ -70,6 +73,8 @@ export default class CarTracks implements DataCarTracks {
     CarTracks.currentTrack = Number(this.carTrack.getAttribute('id'));
     const name = document.querySelector('.text-car-updater') as HTMLInputElement;
     const color = document.querySelector('.color-car-updater') as HTMLInputElement;
+    CarTracks.textUpdater = this.carName;
+    CarTracks.colorUpdater = this.carColor;
     name.value = this.carName;
     color.value = this.carColor;
   }

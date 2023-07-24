@@ -1,8 +1,7 @@
 import elemHTMLClassAttr from '../utilities/functions';
 import Cars from '../car_manager/cars';
-import { type DataTableRows } from '../types/interfaces';
 
-export default class TableRows implements DataTableRows {
+export default class TableRows {
   static currentTrack: number;
 
   static baseUrl = 'http://localhost:3000';

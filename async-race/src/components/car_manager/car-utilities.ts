@@ -11,3 +11,23 @@ export function getRandomColor(): string {
   }
   return `#${color.join('')}`;
 }
+
+export function lockButtonsSwitcher(state: boolean) {
+  const body = document.querySelector('.body') as HTMLElement;
+  const garageButton = document.querySelector('.garage-button') as HTMLElement;
+  const winnersButton = document.querySelector('.winners-button') as HTMLElement;
+  const resetButton = document.querySelector('[button = reset]') as HTMLElement;
+
+  if (state === true) {
+    body.style.pointerEvents = 'none';
+    resetButton.style.pointerEvents = 'none';
+    garageButton.innerHTML = 'RACE TIME!';
+    winnersButton.innerHTML = 'LOCKED!';
+  }
+  if (state === false) {
+    body.style.pointerEvents = 'auto';
+    resetButton.style.pointerEvents = 'auto';
+    garageButton.innerHTML = 'GARAGE';
+    winnersButton.innerHTML = 'WINNERS';
+  }
+}

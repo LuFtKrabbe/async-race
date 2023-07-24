@@ -1,17 +1,12 @@
-import { type DataCarsController } from '../types/interfaces';
-import { getRandomName, getRandomColor } from './car-utilities';
+import { getRandomName, getRandomColor, lockButtonsSwitcher } from './car-utilities';
 import TableController from '../table_manager/table-controller';
 import CarQueries from './car-queries';
 import CarTracks from './car-tracks';
 
-export default class CarsController extends CarTracks implements DataCarsController {
+export default class CarsController extends CarTracks {
   static currentPage: number = 1;
 
   static message: string = 'MESSAGE';
-
-  static textUpdater: string = '';
-
-  static colorUpdater: string = '#AAFFFF';
 
   static totalCars: string | null;
 
@@ -49,8 +44,8 @@ export default class CarsController extends CarTracks implements DataCarsControl
     const message = document.querySelector('.message') as Element;
     buttonPage.innerHTML = `PAGE ${CarsController.currentPage}`;
     buttonCars.innerHTML = `CARS ${CarsController.totalCars}`;
-    name.value = CarsController.textUpdater;
-    color.value = CarsController.colorUpdater;
+    name.value = CarTracks.textUpdater;
+    color.value = CarTracks.colorUpdater;
     message.innerHTML = CarsController.message;
   }
 
@@ -111,9 +106,9 @@ export default class CarsController extends CarTracks implements DataCarsControl
     }
 
     await CarQueries.updateCar(CarTracks.currentTrack, name.value, color.value);
-
-    CarsController.textUpdater = name.value;
-    CarsController.colorUpdater = color.value;
+    TableController.winners = TableController.getWinners();
+    CarTracks.textUpdater = name.value;
+    CarTracks.colorUpdater = color.value;
 
     CarsController.writeMessage('CAR HAS BEEN UPDATED');
     CarsController.cars = CarsController.getCars();
@@ -135,19 +130,17 @@ export default class CarsController extends CarTracks implements DataCarsControl
   }
 
   static async startRace(): Promise<void> {
-    CarsController.writeMessage('RACE TIME!');
-    const body = document.querySelector('.body') as HTMLElement;
-    const resetButton = document.querySelector('[button = reset]') as HTMLElement;
-    body.style.pointerEvents = 'none';
-    resetButton.style.pointerEvents = 'none';
-    const carsReady = await CarsController.cars;
+    lockButtonsSwitcher(true);
+
     const arr: Array<Promise<CarTracks>> = [];
+    const carsReady = await CarsController.cars;
     carsReady.forEach((car) => arr.push(car.startCarEngine(false)));
+
     try {
       const promise = await Promise.any(arr);
-      console.log(arr);
       const currentWinTime = Number((promise.driveTime / 1000).toFixed(2));
       const winnerData = await TableController.getWinner(promise.carId);
+
       if (winnerData.time === undefined) {
         TableController.createWinner(promise.carId, currentWinTime);
       } else if (winnerData.time < currentWinTime) {
@@ -155,20 +148,20 @@ export default class CarsController extends CarTracks implements DataCarsControl
       } else {
         TableController.updateWinner(winnerData.id, winnerData.wins, currentWinTime);
       }
+
       CarsController.writeMessage(`${promise.carName} HAS WON! TIME: ${currentWinTime}`);
+
       await Promise.allSettled(arr);
-      resetButton.style.pointerEvents = 'auto';
+      lockButtonsSwitcher(false);
     } catch {
       CarsController.writeMessage('All ENGINES ARE BROKEN DOWN!!!');
     }
   }
 
   static async resetRace(): Promise<void> {
-    const body = document.querySelector('.body') as HTMLElement;
     const carsReady = await CarsController.cars;
     carsReady.forEach((car) => car.stopCarEngine());
     CarsController.writeMessage('READY FOR NEW RACE!');
-    body.style.pointerEvents = 'auto';
   }
 }
 
