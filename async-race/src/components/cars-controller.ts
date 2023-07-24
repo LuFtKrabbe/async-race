@@ -35,6 +35,12 @@ export default class CarsController extends CarTracks implements DataCarsControl
     }
   }
 
+  static writeMessage(string: string): void {
+    const message = document.querySelector('.message') as Element;
+    CarsController.message = string;
+    message.innerHTML = CarsController.message;
+  }
+
   static setPageCarInfo(): void {
     const buttonCars = document.querySelector('[button = cars]') as Element;
     const buttonPage = document.querySelector('[button = page]') as Element;
@@ -102,8 +108,7 @@ export default class CarsController extends CarTracks implements DataCarsControl
     CarsController.cars = CarsController.getCars();
     CarsController.drawCars();
 
-    CarsController.message = '100 RANDOM CARS ARE CREATED';
-    CarsController.setPageCarInfo();
+    CarsController.writeMessage('100 RANDOM CARS ARE CREATED');
   }
 
   static async createRandomCar(name: string, color: string): Promise<Response> {
@@ -123,8 +128,7 @@ export default class CarsController extends CarTracks implements DataCarsControl
     let carName = name.value;
     if (name.value === '') {
       carName = CarsController.getRandomName();
-      CarsController.message = 'RANDOM CAR IS CREATED';
-      CarsController.setPageCarInfo();
+      CarsController.writeMessage('RANDOM CAR IS CREATED');
     }
 
     await fetch(`${CarsController.baseUrl}/garage`, {
@@ -143,8 +147,7 @@ export default class CarsController extends CarTracks implements DataCarsControl
     const name = document.querySelector('.text-car-updater') as HTMLInputElement;
     const color = document.querySelector('.color-car-updater') as HTMLInputElement;
     if (CarTracks.currentTrack === undefined) {
-      CarsController.message = 'CHOOSE CAR FOR UPDATING';
-      CarsController.setPageCarInfo();
+      CarsController.writeMessage('CHOOSE CAR FOR UPDATING');
       return;
     }
 
@@ -176,35 +179,44 @@ export default class CarsController extends CarTracks implements DataCarsControl
       CarsController.drawCars();
 
       TableController.deleteWinner(id);
-
-      CarsController.message = 'CAR HAS BEEN REMOVED';
-      CarsController.setPageCarInfo();
+      CarsController.writeMessage('CAR HAS BEEN REMOVED');
     }
   }
 
   static async startRace(): Promise<void> {
+    CarsController.writeMessage('RACE TIME!');
+    const body = document.querySelector('.body') as HTMLElement;
+    const resetButton = document.querySelector('[button = reset]') as HTMLElement;
+    body.style.pointerEvents = 'none';
+    resetButton.style.pointerEvents = 'none';
     const carsReady = await CarsController.cars;
     const arr: Array<Promise<CarTracks>> = [];
     carsReady.forEach((car) => arr.push(car.startCarEngine()));
     try {
       const promise = await Promise.any(arr);
+      const currentWinTime = Number((promise.driveTime / 1000).toFixed(2));
       const winnerData = await TableController.getWinner(promise.carId);
       if (winnerData.time === undefined) {
-        TableController.createWinner(promise.carId, Number((promise.driveTime / 1000).toFixed(2)));
-      } else if (winnerData.time < promise.driveTime) {
+        TableController.createWinner(promise.carId, currentWinTime);
+      } else if (winnerData.time < currentWinTime) {
         TableController.updateWinner(winnerData.id, winnerData.wins, winnerData.time);
       } else {
-        TableController.updateWinner(winnerData.id, winnerData.wins, Number((promise.driveTime / 1000).toFixed(2)));
+        TableController.updateWinner(winnerData.id, winnerData.wins, currentWinTime);
       }
+      CarsController.writeMessage(`${promise.carName} HAS WON! TIME: ${currentWinTime}`);
+      await Promise.allSettled(arr);
+      resetButton.style.pointerEvents = 'auto';
     } catch {
-      CarsController.message = 'All ENGINES ARE BROKEN DOWN!!!';
-      CarsController.setPageCarInfo();
+      CarsController.writeMessage('All ENGINES ARE BROKEN DOWN!!!');
     }
   }
 
   static async resetRace(): Promise<void> {
+    const body = document.querySelector('.body') as HTMLElement;
     const carsReady = await CarsController.cars;
     carsReady.forEach((car) => car.stopCarEngine());
+    CarsController.writeMessage('READY FOR NEW RACE!');
+    body.style.pointerEvents = 'auto';
   }
 }
 

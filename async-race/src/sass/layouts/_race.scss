@@ -116,6 +116,10 @@
             background-color: rgb(141, 1, 1, 0.9);
         }
     }
+    &.unactive {
+        background-color: $button-unactive;
+        color: $button-text-unactive;
+    }
 }
 
 .car {

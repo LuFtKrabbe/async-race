@@ -7,9 +7,11 @@ export default class CarTracks implements DataCarTracks {
 
   static baseUrl = 'http://localhost:3000';
 
-  racePlace = document.querySelector('.race-place') as Element;
-
   carTrack: HTMLElement = elemHTMLClassAttr('car-track')();
+
+  stopButton: HTMLElement = elemHTMLClassAttr('button-engine')('button', 'stop');
+
+  startButton: HTMLElement = elemHTMLClassAttr('button-engine')('button', 'start');
 
   car: SVGSVGElement;
 
@@ -17,14 +19,19 @@ export default class CarTracks implements DataCarTracks {
 
   carName: string;
 
-  driveTime: number = 0;
+  carColor: string;
 
-  animationId: number = 0;
+  driveTime: number;
+
+  animationId: number;
 
   constructor(name: string, color: string, id: number) {
     this.car = new Cars(color).car;
     this.carId = id;
     this.carName = name;
+    this.carColor = color;
+    this.driveTime = 0;
+    this.animationId = 0;
     this.createTrack();
   }
 
@@ -34,12 +41,15 @@ export default class CarTracks implements DataCarTracks {
     const editButton = elemHTMLClassAttr('button-edit')('button', 'edit');
     editButton.innerHTML = '&#128396';
     editButton.addEventListener('click', this.setTrackForUpdate.bind(this));
-    const stopButton = elemHTMLClassAttr('button-engine')('button', 'stop');
-    stopButton.addEventListener('click', this.stopCarEngine.bind(this));
-    stopButton.innerHTML = 'S';
-    const startButton = elemHTMLClassAttr('button-engine')('button', 'start');
-    startButton.addEventListener('click', this.startCarEngine.bind(this));
-    startButton.innerHTML = 'GO';
+
+    this.stopButton.addEventListener('click', this.stopCarEngine.bind(this));
+    this.stopButton.classList.add('unactive');
+    this.stopButton.style.pointerEvents = 'none';
+    this.stopButton.innerHTML = 'S';
+
+    this.startButton.addEventListener('click', this.startCarEngine.bind(this));
+    this.startButton.innerHTML = 'GO';
+
     const carName = elemHTMLClassAttr('car-name')();
     carName.innerHTML = `${this.carName}`;
 
@@ -48,7 +58,7 @@ export default class CarTracks implements DataCarTracks {
     const engineButtons = elemHTMLClassAttr('engine-buttons')();
 
     carEditor.append(deleteButton, editButton, carName);
-    engineButtons.append(stopButton, startButton);
+    engineButtons.append(this.stopButton, this.startButton);
 
     carController.append(engineButtons);
     carController.append(this.car);
@@ -59,11 +69,21 @@ export default class CarTracks implements DataCarTracks {
 
   setTrackForUpdate() {
     CarTracks.currentTrack = Number(this.carTrack.getAttribute('id'));
+    const name = document.querySelector('.text-car-updater') as HTMLInputElement;
+    const color = document.querySelector('.color-car-updater') as HTMLInputElement;
+    name.value = this.carName;
+    color.value = this.carColor;
   }
 
   async startCarEngine(): Promise<this> {
-    const carDistance = document.documentElement.clientWidth - 200;
-    let carPostion = 0;
+    this.stopButton.classList.remove('unactive');
+    this.stopButton.style.pointerEvents = 'auto';
+    this.startButton.classList.add('unactive');
+    this.startButton.style.pointerEvents = 'none';
+
+    const currentWidth = document.documentElement.clientWidth;
+    const carWidth = 160;
+    const carDistance = currentWidth - carWidth;
 
     const response = await fetch(`${CarTracks.baseUrl}/engine?id=${this.carId}&status=started`, {
       method: 'PATCH',
@@ -72,22 +92,19 @@ export default class CarTracks implements DataCarTracks {
       },
     });
     const data = await response.json();
-    console.log(data);
-
     this.driveTime = data.distance / data.velocity;
-    const startTime = performance.now();
     const step = carDistance / this.driveTime;
 
+    const startTime = performance.now();
+
     const myAnimation = (currentTime: number): void => {
-      carPostion = (currentTime - startTime) * step;
-      this.car.style.left = `${carPostion}px`;
+      this.car.style.left = `${(currentTime - startTime) * step}px`;
       if (currentTime < startTime + this.driveTime) {
         this.animationId = requestAnimationFrame(myAnimation);
       }
     };
-
     this.animationId = requestAnimationFrame(myAnimation);
-    let dataDrive;
+
     try {
       const responseDrive = await fetch(`${CarTracks.baseUrl}/engine?id=${this.carId}&status=drive`, {
         method: 'PATCH',
@@ -95,8 +112,7 @@ export default class CarTracks implements DataCarTracks {
           'Content-Type': 'application/json',
         },
       });
-      dataDrive = await responseDrive.json();
-      console.log(dataDrive);
+      await responseDrive.json();
     } catch {
       cancelAnimationFrame(this.animationId);
       throw new Error();
@@ -105,15 +121,17 @@ export default class CarTracks implements DataCarTracks {
   }
 
   async stopCarEngine(): Promise<void> {
-    const response = await fetch(`${CarTracks.baseUrl}/engine?id=${this.carId}&status=stopped`, {
+    this.stopButton.classList.add('unactive');
+    this.stopButton.style.pointerEvents = 'none';
+    cancelAnimationFrame(this.animationId);
+    await fetch(`${CarTracks.baseUrl}/engine?id=${this.carId}&status=stopped`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    const data = await response.json();
-    cancelAnimationFrame(this.animationId);
     this.car.style.left = `${0}px`;
-    console.log(data);
+    this.startButton.classList.remove('unactive');
+    this.startButton.style.pointerEvents = 'auto';
   }
 }
