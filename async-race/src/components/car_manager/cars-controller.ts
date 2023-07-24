@@ -1,5 +1,5 @@
 import { type DataCarsController } from '../types/interfaces';
-import TableController from '../table-controller';
+import TableController from '../table_manager/table-controller';
 import CarQueries from './car-queries';
 import CarTracks from './car-tracks';
 

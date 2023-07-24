@@ -1,7 +1,7 @@
 import createGarageView from '../garage-view';
 import createTableView from '../table-view';
 import CarsController from '../car_manager/cars-controller';
-import TableController from '../table-controller';
+import TableController from '../table_manager/table-controller';
 import addEventListenersGarage from './garage-listeners';
 import addEventListenersTable from './table-listeners';
 

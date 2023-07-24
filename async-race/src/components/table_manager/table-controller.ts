@@ -1,9 +1,8 @@
-import { type DataTableController } from './types/interfaces';
+import { type DataTableController } from '../types/interfaces';
+import TableQueries from './table_queries';
 import TableRows from './table-rows';
 
 export default class TableController implements DataTableController {
-  static baseUrl = 'http://localhost:3000';
-
   static totalWinners: string | null;
 
   static currentPage: number = 1;
@@ -18,9 +17,7 @@ export default class TableController implements DataTableController {
     const buttonPage: Element | null = document.querySelector('[button-table = page]');
     const buttonWinners: Element | null = document.querySelector('[button-table = winners]');
 
-    const queryString = `?_page=${TableController.currentPage}&_limit=${TableController.pageWinners}&${TableController.sort}`;
-
-    const response = await fetch(`${TableController.baseUrl}/winners${queryString}`);
+    const response = await TableQueries.getWinnersOnPage(TableController.currentPage, TableController.sort);
     const data = await response.json();
 
     TableController.totalWinners = response.headers.get('x-total-count');
@@ -66,40 +63,24 @@ export default class TableController implements DataTableController {
   }
 
   static async getWinner(carId: number): Promise<{ id: number; wins: number; time: number }> {
-    const response = await fetch(`${TableController.baseUrl}/winners/${carId}`);
+    const response = await TableQueries.getWinner(carId);
     const data: { id: number; wins: number; time: number } = await response.json();
 
     return data;
   }
 
   static async createWinner(carId: number, driveTime: number): Promise<void> {
-    await fetch(`${TableController.baseUrl}/winners`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id: carId, wins: 1, time: driveTime }),
-    });
-
+    await TableQueries.createWinner(carId, driveTime);
     TableController.winners = TableController.getWinners();
   }
 
   static async updateWinner(carId: number, wins: number, driveTime: number): Promise<void> {
-    await fetch(`${TableController.baseUrl}/winners/${carId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id: carId, wins: wins + 1, time: driveTime }),
-    });
-
+    await TableQueries.updateWinner(carId, wins, driveTime);
     TableController.winners = TableController.getWinners();
   }
 
   static async deleteWinner(carId: string): Promise<void> {
-    await fetch(`${TableController.baseUrl}/winners/${carId}`, {
-      method: 'DELETE',
-    });
+    await TableQueries.removeWinner(carId);
     TableController.winners = TableController.getWinners();
   }
 

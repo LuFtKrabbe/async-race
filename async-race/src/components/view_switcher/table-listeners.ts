@@ -1,4 +1,4 @@
-import TableController from '../table-controller';
+import TableController from '../table_manager/table-controller';
 
 export default function addEventListenersTable() {
   const prevButton = document.querySelector('[button-table = prev]') as Element;
